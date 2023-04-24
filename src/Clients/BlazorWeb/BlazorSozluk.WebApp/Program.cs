@@ -27,5 +27,5 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IIdentityService, IdentityService>();
 
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddBlazoredLocalStorage()
+builder.Services.AddBlazoredLocalStorage();
 await builder.Build().RunAsync();
