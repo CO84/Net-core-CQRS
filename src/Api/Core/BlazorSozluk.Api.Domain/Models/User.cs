@@ -1,4 +1,6 @@
-﻿namespace BlazorSozluk.Api.Domain.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BlazorSozluk.Api.Domain.Models
 {
     public class User : BaseEntity
     {

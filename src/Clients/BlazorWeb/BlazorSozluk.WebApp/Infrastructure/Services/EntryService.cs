@@ -41,7 +41,7 @@ namespace BlazorSozluk.WebApp.Infrastructure.Services
 
         public async Task<PagedViewModel<GetEntryCommentsViewModel>> GetEntryComments(Guid entryId, int page, int pageSize)
         {
-            var result = await _httpClient.GetFromJsonAsync<PagedViewModel<GetEntryCommentsViewModel>>($"api/entry/comments/{entryId}?page={page}&pagesize={pageSize}");
+            var result = await _httpClient.GetFromJsonAsync<PagedViewModel<GetEntryCommentsViewModel>>($"api/entry/comment/{entryId}?page={page}&pagesize={pageSize}");
             return result;
         }
 

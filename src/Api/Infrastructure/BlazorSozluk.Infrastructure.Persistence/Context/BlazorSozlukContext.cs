@@ -29,7 +29,7 @@ namespace BlazorSozluk.Infrastructure.Persistence.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var conStr = "Data Source=localhost;Initial Catalog=blazorsozluk;Trusted_Connection=True;MultipleActiveResultSets=True";
+            var conStr = "Data Source=CIHAN-OZCELIK;Initial Catalog=blazorsozluk;Trusted_Connection=True;MultipleActiveResultSets=True";
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(conStr, opt =>

@@ -10,7 +10,9 @@ namespace BlazorSozluk.Infrastructure.Persistence.EntityConfigurations.EntryComm
         {
             base.Configure(builder);
 
-            builder.ToTable("user", BlazorSozlukContext.DEFAULT_SCHEMA);         
+            builder.ToTable("user", BlazorSozlukContext.DEFAULT_SCHEMA);     
+            builder.Property(x => x.Email).HasColumnType("EmailAddress").IsRequired();
+            builder.Property(x => x.Password).IsRequired();
         }
     }
 }

@@ -6,6 +6,7 @@ using BlazorSozluk.Api.Application.Features.Queries.GetUserEntries;
 using BlazorSozluk.Common.Models.Queries;
 using BlazorSozluk.Common.Models.RequestModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +47,7 @@ namespace BlazorSozluk.Api.WebApi.Controllers
 
         [HttpGet]
         [Route("UserEntries")]
+        [Authorize]
         public async Task<IActionResult> GetUserEntries(string userName, Guid userId, int page, int pageSize)
         {
             if (userId == Guid.Empty && string.IsNullOrEmpty(userName))
@@ -60,6 +62,7 @@ namespace BlazorSozluk.Api.WebApi.Controllers
 
         [HttpPost]
         [Route("CreateEntry")]
+        [Authorize]
         public async Task<IActionResult> CreateEntry([FromBody] CreateEntryCommand command)
         {
             if (!command.CreatedById.HasValue)
@@ -82,7 +85,7 @@ namespace BlazorSozluk.Api.WebApi.Controllers
 
         [HttpGet]
         [Route("MainPageEntries")]
-        public async Task<IActionResult> GetMainPAgeEntries(int page, int pageSize)
+        public async Task<IActionResult> GetMainPageEntries(int page, int pageSize)
         {
             var entries = await _mediator.Send(new GetMainPageEntriesQuery(UserId, page, pageSize));
             return Ok(entries);

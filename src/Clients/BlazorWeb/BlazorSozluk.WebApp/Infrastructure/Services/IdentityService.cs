@@ -3,8 +3,10 @@ using BlazorSozluk.Common.Infrastructure.Exceptions;
 using BlazorSozluk.Common.Infrastructure.Results;
 using BlazorSozluk.Common.Models.Queries;
 using BlazorSozluk.Common.Models.RequestModels;
+using BlazorSozluk.WebApp.Infrastructure.Auth;
 using BlazorSozluk.WebApp.Infrastructure.Extensions;
 using BlazorSozluk.WebApp.Infrastructure.Services.Interfaces;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -14,10 +16,12 @@ namespace BlazorSozluk.WebApp.Infrastructure.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ISyncLocalStorageService _syncLocalStorageService;
-        public IdentityService(HttpClient httpClient, ISyncLocalStorageService syncLocalStorageService)
+        private readonly AuthenticationStateProvider authenticationStateProvider;
+        public IdentityService(HttpClient httpClient, ISyncLocalStorageService syncLocalStorageService, AuthenticationStateProvider authenticationStateProvider = null)
         {
             _httpClient = httpClient;
             _syncLocalStorageService = syncLocalStorageService;
+            this.authenticationStateProvider = authenticationStateProvider;
         }
 
         public bool isLoggedIn => !string.IsNullOrEmpty(GetUserToken());
@@ -62,8 +66,8 @@ namespace BlazorSozluk.WebApp.Infrastructure.Services
                 _syncLocalStorageService.SetUserName(response.UserName);
                 _syncLocalStorageService.SetUserId(response.Id);
 
-                //TODO Check after auth
-                //((AuthStateProvider)authStateProvider).NotifyUserLogin(response.UserName, response.Id)
+
+                ((AuthStateProvider)authenticationStateProvider).NotifyUserLogin(response.UserName, response.Id);
 
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", response.UserName);
                 return true;
@@ -76,8 +80,8 @@ namespace BlazorSozluk.WebApp.Infrastructure.Services
             _syncLocalStorageService.RemoveItem(LocalStorageExtension.TokenName);
             _syncLocalStorageService.RemoveItem(LocalStorageExtension.UserName);
             _syncLocalStorageService.RemoveItem(LocalStorageExtension.UserId);
-            //TODO auth notify
 
+            ((AuthStateProvider)authenticationStateProvider).NotifyUserLogout();
             _httpClient.DefaultRequestHeaders.Authorization = null;
         }
     }

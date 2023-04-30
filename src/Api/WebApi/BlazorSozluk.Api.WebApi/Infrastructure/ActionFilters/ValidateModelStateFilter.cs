@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using BlazorSozluk.Common.Infrastructure.Results;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace BlazorSozluk.Api.WebApi.Infrastructure.ActionFilters
 {
@@ -13,9 +15,13 @@ namespace BlazorSozluk.Api.WebApi.Infrastructure.ActionFilters
                     : x.Exception?.Message)
                     .Distinct().ToList();
 
+                var result = new ValidationResponseModel(message);
+                context.Result = new BadRequestObjectResult(result);
+
                 return;
             }
             await next();
         }
     }
 }
+

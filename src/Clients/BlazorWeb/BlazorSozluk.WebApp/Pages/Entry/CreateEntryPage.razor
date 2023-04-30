@@ -1,0 +1,34 @@
+﻿@page "/createEntry"
+
+
+<br />
+<EditForm Model="@command" OnInvalidSubmit="@CreateEntry">
+    <div class="entry-comment-add-container p-5">
+        <div class="entry-comment-add">
+            <InputText @bind-Value="command.Subject" class="form-control" placeholder="subject"/>
+            <br />
+            <InputTextArea @bind-bind-Value="command.Content" class="entry-comment-textarea" placeholder="content"/>
+            
+            <div class="entry-comment-actions">
+                <input type="submit" class="btn btn-success btn-sozluk" value="Create"/>
+            </div>
+
+        </div>
+    </div>
+</EditForm>
+
+
+
+@code {
+
+    [Inject] public IEntryService _entryService { get; set; }
+    [Inject] public NavigationManager _navigationManager { get; set; }
+
+    private CreateEntryCommand command = new();
+
+    public async Task CreateEntry()
+    {
+        var createdEntryId = await _entryService.CreateEntry(command);
+        _navigationManager.NavigateTo($"/entry/{createdEntryId}");
+    }
+}
