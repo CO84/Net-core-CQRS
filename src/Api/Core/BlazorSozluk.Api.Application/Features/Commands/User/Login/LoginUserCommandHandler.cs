@@ -43,7 +43,7 @@ namespace BlazorSozluk.Api.Application.Features.Commands.User.Login
             //    throw new DatabaseValidationException("Password is Wrong!");
 
             //TODO Password düzeltilecek
-            if (dbUser.Password != "C2286CCF61D492E3874E883578B9C3D1"/*request.Password*/) // db den encrypt li kopyalanıp denenirken kullanıldı
+            if (dbUser.Password != "41DDD6B4064FDBB0D6AB79ECC5E829ED"/*request.Password*/) // db den encrypt li kopyalanıp denenirken kullanıldı
                 throw new DatabaseValidationException("Password is Wrong!");
 
             if (!dbUser.EmailComfirmed)

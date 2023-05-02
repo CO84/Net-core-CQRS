@@ -7,7 +7,7 @@ using FluentValidation.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+//builder.Services.AddHttpContextAccessor();
 builder.Services
     .AddControllers(opt => opt.Filters.Add<ValidateModelStateFilter>())
     .AddJsonOptions(opt =>
@@ -17,6 +17,9 @@ builder.Services
     .ConfigureApiBehaviorOptions(x => x.SuppressModelStateInvalidFilter = true);
 
 builder.Services.AddFluentValidationAutoValidation();
+
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

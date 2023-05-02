@@ -1,4 +1,6 @@
 ﻿@using BlazorSozluk.Common.Models.Page
+@using BlazorSozluk.WebApp.Pages.Components
+
 
 
 @if(entries is not null) {
@@ -7,18 +9,33 @@
         <EntryViewerComponent Entry="@entry"/>
         <br />
     }
+     <br />
+      <br />
+      <PaginationComponent 
+          TotalPage="@entries.PageInfo.TotalPageCount"
+          CurrentPage="@currentPage"
+          OnPageChanged="@OnPageChanged"/>
 }
 
 
 
 @code {
     [Inject] IEntryService entryService { get; set; }
+    private int currentPage = 1;
 
     PagedViewModel<GetEntryDetailViewModel> entries;
 
+    public async Task OnPageChanged(int pageNumber)
+    {
+        currentPage = pageNumber;
+        entries = await entryService.GetMainPageEntries(currentPage, 10);
+    }
+
+
     protected override async Task OnInitializedAsync()
     {
-       entries = await entryService.GetMainPageEntries(1,20);
+       
+       entries = await entryService.GetMainPageEntries(currentPage, 20);
         //TODO Pagination will be handled
     }
 }

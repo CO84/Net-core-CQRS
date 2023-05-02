@@ -63,5 +63,25 @@ namespace BlazorSozluk.Common.Infrastructure
             consumer.Model.QueueBind(queueName, exchangName, queueName);
             return consumer;
         }
+
+        public static EventingBasicConsumer Recive<T>(this EventingBasicConsumer consumer, Action<T> act)
+        {
+            consumer.Received += (m, eventArgs) =>
+            {
+                var body = eventArgs.Body.ToArray();
+                var message = Encoding.UTF8.GetString(body);
+
+                var model = JsonSerializer.Deserialize<T>(message);
+                act(model);
+                consumer.Model.BasicAck(eventArgs.DeliveryTag, false);
+            };
+            return consumer;
+        }
+
+        public static EventingBasicConsumer StartConsuming(this EventingBasicConsumer consumer, string queuName)
+        {
+            consumer.Model.BasicConsume(queue: queuName, autoAck: false, consumer: consumer);
+            return consumer;
+        }
     }
 }

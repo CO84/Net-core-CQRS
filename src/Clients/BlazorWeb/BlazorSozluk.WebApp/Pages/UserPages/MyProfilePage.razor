@@ -1,0 +1,53 @@
+﻿@page "/profile/{UserName}"
+@page "/profile/{UserId:guid}"
+@page "/me"
+@using BlazorSozluk.Common.Models.Page
+@using BlazorSozluk.WebApp.Infrastructure.Extensions
+@using BlazorSozluk.WebApp.Pages.Components
+@using BlazorSozluk.WebApp.Pages.UserPages.Components
+@using Blazored.LocalStorage
+
+
+
+<UserProfileDetailComponent UserName="@UserName" UserId="@UserId"/>
+<br />
+
+@if(entries is not null)
+{
+    foreach (var entry in entries.Results)
+    {
+        <EntryViewerComponent Entry="@entry" MyEntries="true"/>
+        <br />
+    }
+
+    <PaginationComponent 
+        TotalPage="@entries.PageInfo.TotalPageCount"
+        CurrentPage="@currentPage"
+        OnPageChanged="@OnPageChanged"/>
+}
+
+
+@code {
+
+    [Inject] public IEntryService _entryService { get; set; }
+
+    PagedViewModel<GetEntryDetailViewModel> entries;
+
+    [Parameter] public string UserName { get; set; }
+    [Parameter] public Guid UserId { get; set; }
+
+    [Inject] ILocalStorageService _localStorageService { get; set; }
+
+    private int currentPage = 1;
+
+    public async Task OnPageChanged(int pageNumber)
+    {
+        entries = await _entryService.GetProfilePageEntries(pageNumber, 10, UserName);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //UserName = await _localStorageService.GetUserName();
+        entries = await _entryService.GetProfilePageEntries(currentPage, 10, UserName);
+    }
+}
