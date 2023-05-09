@@ -1,4 +1,5 @@
 ﻿using BlazorSozluk.Common.Events.Entry;
+using BlazorSozluk.Common.Events.EntryComment;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System;
@@ -24,13 +25,50 @@ namespace BlazrSozluk.Projections.FavoriteService.Services
         {
             using var connection = new SqlConnection(connectionString);
 
-            await connection.ExecuteAsync("INSERT INTO EntryFavorite (Id, EntryId, CreatedById, CreateDate) VALUES(@Id, @EntryId, @CreatedById, GETDATE())",
+            await connection.ExecuteAsync("INSERT INTO entry_favorite (Id, EntryId, CreatedById, CreateDate) VALUES(@Id, @EntryId, @CreatedById, GETDATE())",
                     new
                     {
                         Id = Guid.NewGuid(),
                         EntryId = @event.EntryId,
                         CreatedById = @event.CreatedBy
                     });
+        }
+
+        public async Task CreateEntryCommentFav(CreateEntryCommentFavEvent @event)
+        {
+            using var connection = new SqlConnection(connectionString);
+
+            await connection.ExecuteAsync("INSERT INTO entry_comment_favorite (Id, EntryCommentId, CreatedById, CreateDate) VALUES(@Id, @EntryCommentId, @CreatedById, GETDATE())",
+                    new
+                    {
+                        Id = Guid.NewGuid(),
+                        EntryCommentId = @event.EntryCommentId,
+                        CreatedById = @event.CreatedBy
+                    });
+        }
+
+        public async Task DeleteEntryFav(DeleteEntryFavEvent @event)
+        {
+            using var connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("DELETE FROM entry_favorite WHERE EntryId = @EntryId AND CreatedById = @CreatedById",
+               new
+               {
+                   Id = Guid.NewGuid(),
+                   EntryId = @event.EntryId,
+                   CreatedById = @event.CreatedBy
+               });
+        }
+
+        public async Task DeleteEntryCommentFav(DeleteEntryCommentFavEvent @event)
+        {
+            using var connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("DELETE FROM entry_comment_favorite WHERE EntryCommentId = @EntryCommentId AND CreatedById = @CreatedById",
+               new
+               {
+                   Id = Guid.NewGuid(),
+                   EntryCommentId = @event.EntryCommentId,
+                   CreatedById = @event.CreatedBy
+               });
         }
     }
 }

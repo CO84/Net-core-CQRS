@@ -17,7 +17,7 @@ namespace BlazorSozluk.Api.Application.Features.Commands.EntryComment.CreateFav
             QueueFactory.SendMessageToExchange(exchangeName: sozlukConstatns.FavExchangeName,
                 exchangeType: sozlukConstatns.DefaultExchangetype,
                 queueName: sozlukConstatns.CreateEntryCommentFavQueueName,
-                obj: new CreateentryCommentFavEvent()
+                obj: new CreateEntryCommentFavEvent()
                 {
                     EntryCommentId = request.EntryCommentId,
                     CreatedBy = request.UserId

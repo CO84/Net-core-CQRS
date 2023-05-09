@@ -8,7 +8,12 @@ namespace BlazorSozluk.Common
 {
     public class sozlukConstatns
     {
+#if DEBUG
         public const string RabbitMQHost = "localhost";
+#else
+        public const string RabbitMQHost = "rabbitmq";
+#endif
+
         public const string DefaultExchangetype = "direct";
 
 

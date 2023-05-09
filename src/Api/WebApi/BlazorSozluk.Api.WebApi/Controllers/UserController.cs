@@ -21,6 +21,7 @@ namespace BlazorSozluk.Api.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> Get(Guid id)
         {
             var user = await _mediator.Send(new GetUserDetailQuery(id));
@@ -30,6 +31,7 @@ namespace BlazorSozluk.Api.WebApi.Controllers
 
         [HttpGet]
         [Route("UserName/{userName}")]
+        [Authorize]
         public async Task<IActionResult> GetByUserName(string userName)
         {
             var user = await _mediator.Send(new GetUserDetailQuery(Guid.Empty, userName));
@@ -48,7 +50,7 @@ namespace BlazorSozluk.Api.WebApi.Controllers
 
         [HttpPost]
         [Route("Create")]
-        [Authorize]
+        
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
             var res = await _mediator.Send(command);
@@ -68,7 +70,7 @@ namespace BlazorSozluk.Api.WebApi.Controllers
 
         [HttpPost]
         [Route("Confirm")]
-        public async Task<IActionResult> ConfirmEmailk(Guid id)
+        public async Task<IActionResult> ConfirmEmail(Guid id)
         {
             var guid = await _mediator.Send(new ConfirmEmailCommand() { ConfirmationId = id});
 
@@ -77,6 +79,7 @@ namespace BlazorSozluk.Api.WebApi.Controllers
 
         [HttpPost]
         [Route("ChangePassword")]
+        [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangeUserPasswordCommand command)
         {
             if (!command.UserId.HasValue)

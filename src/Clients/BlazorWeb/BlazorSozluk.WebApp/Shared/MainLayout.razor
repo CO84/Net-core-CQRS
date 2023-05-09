@@ -150,7 +150,8 @@
         searchText = string.Empty;
     }
 
-    private async Task GoEntry(Guid entryId) {
+    private async Task GoEntry(Guid entryId) 
+    {
         await OnSearchFocusOut();
         _navigationManager.NavigateTo($"/entry/{entryId}");
     }

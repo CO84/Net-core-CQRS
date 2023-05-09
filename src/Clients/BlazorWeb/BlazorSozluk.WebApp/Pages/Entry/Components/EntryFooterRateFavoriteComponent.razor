@@ -7,13 +7,13 @@
 <div class="container">
     <span>
         <a class="p-1" title="Up vote!">
-            <span class="oi oi-arrow-top entry-vote @(IsFavorited == true ? "text-success" : "text-secondary")"
+            <span class="oi oi-arrow-top entry-vote @(VoteType == VoteType.UpVote ? "text-success" : "text-secondary")"
                 @onclick="(() => UpClicked())">
             </span>
         </a>
 
         <a class="p-1" title="Down vote!">
-            <span class="oi oi-arrow-bottom entry-vote @(IsFavorited == true ? "text-danger" : "text-secondary")"
+            <span class="oi oi-arrow-bottom entry-vote @(VoteType == VoteType.DownVote ? "text-danger" : "text-secondary")"
                   @onclick="(() => DownClicked())">
             </span>
         </a>
@@ -36,6 +36,7 @@
     [Parameter] public bool IsFavorited { get; set; }
     [Parameter] public Guid? EntryId { get; set; }
     [Parameter] public int FavoritedCount { get; set; }
+    //[Parameter] public VoteType EntryVoteType { get; set; }
 
     private async Task FavoritedClicked() 
     {

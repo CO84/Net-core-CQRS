@@ -13,6 +13,18 @@ namespace BlazorSozluk.Infrastructure.Persistence.EntityConfigurations.EntryComm
             builder.ToTable("user", BlazorSozlukContext.DEFAULT_SCHEMA);     
             builder.Property(x => x.Email).HasColumnType("EmailAddress").IsRequired();
             builder.Property(x => x.Password).IsRequired();
+
+            builder.HasData(new Api.Domain.Models.User
+            {
+                CreateDate = DateTime.Now,
+                Email = "admin@gmail.com",
+                EmailComfirmed = true,
+                FirstName = "admin",
+                LastName = "admin",
+                UserName = "admin",
+                Password = "admin1234",
+                Id = Guid.NewGuid(),
+            });
         }
     }
 }

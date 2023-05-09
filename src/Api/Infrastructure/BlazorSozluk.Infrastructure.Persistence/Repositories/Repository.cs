@@ -145,9 +145,17 @@ namespace BlazorSozluk.Infrastructure.Persistence.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool noTracking = true, params Expression<Func<TEntity, object>>[] includes)
+        public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool noTracking = true, params Expression<Func<TEntity, object>>[] includes)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> query = entity;
+            if (predicate is not null) query = query.Where(predicate);
+
+            query = ApplyIncludes(query, includes);
+
+            if (noTracking) query = query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync();
+
         }
 
         public virtual IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate, bool noTracking = true, params Expression<Func<TEntity, object>>[] includes)

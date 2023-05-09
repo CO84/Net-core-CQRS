@@ -39,7 +39,7 @@ namespace BlazorSozluk.Api.Application.Features.Commands.User.Create
             {
                 var @event = new UserEmailChangedEvent()
                 {
-                    OldEmailAddress = null,
+                    OldEmailAddress = dbUser.Email,
                     NewEmailAddress = dbUser.Email
                 };
 

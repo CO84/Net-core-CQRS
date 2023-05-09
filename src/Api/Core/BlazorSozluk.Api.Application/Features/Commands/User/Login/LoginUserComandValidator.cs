@@ -19,8 +19,8 @@ namespace BlazorSozluk.Api.Application.Features.Commands.User.Login
 
             RuleFor(x => x.Password)
                 .NotNull()
-                .MinimumLength(6)
-                .WithMessage("{PropertyName} should at least be {MinLenght} characters");
+                .MinimumLength(4)
+                .WithMessage("{PropertyName} should at least be 4 characters");
         }
     }
 }
